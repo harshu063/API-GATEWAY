@@ -31,7 +31,7 @@ public class GatewaySecurityConfiguration {
                         .pathMatchers(HttpMethod.POST, "/api/v1/auth/registrations").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/v1/products/**", "/api/v1/search/**",
                                 "/products/**", "/search/**")
-                        .hasAuthority("SCOPE_catalog.read")
+                        .permitAll()
                         .pathMatchers("/api/v1/products/**", "/api/v1/search/**",
                                 "/products/**", "/search/**")
                         .hasAuthority("SCOPE_catalog.write")
