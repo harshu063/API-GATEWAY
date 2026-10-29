@@ -125,6 +125,25 @@ class GatewayAuthenticationContractTests {
                 .expectStatus().isEqualTo(UNAUTHORIZED);
     }
 
+    @Test
+    void paymentWriteRequiresThePaymentWriteScope() {
+        webTestClient.post()
+                .uri("/payments/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue("{}")
+                .header(HttpHeaders.AUTHORIZATION, bearerToken(ISSUER, EXPECTED_AUDIENCE, "catalog.read"))
+                .exchange()
+                .expectStatus().isEqualTo(FORBIDDEN);
+
+        webTestClient.post()
+                .uri("/payments/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue("{}")
+                .header(HttpHeaders.AUTHORIZATION, bearerToken(ISSUER, EXPECTED_AUDIENCE, "payments.write"))
+                .exchange()
+                .expectStatus().isEqualTo(OK);
+    }
+
     private static String bearerToken(String issuer, String audience, String scope) {
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()
